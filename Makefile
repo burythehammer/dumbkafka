@@ -1,12 +1,18 @@
+GOOS=darwin
+GOARCH=amd64
+
 bin/consumer:
-	GOOS=darwin GOARCH=amd64 go build -o bin/consumer ./consumer/main.go
+	go build -o bin/consumer ./consumer
 	chmod +x bin/consumer
 
 bin/producer:
-	GOOS=darwin GOARCH=amd64 go build -o bin/producer ./producer/main.go
+	go build -o bin/producer ./producer
 	chmod +x bin/producer
 
 clean:
 	rm -rf bin
 
-.PHONY: clean
+fmt:
+	go fmt ./...
+
+.PHONY: clean fmt
