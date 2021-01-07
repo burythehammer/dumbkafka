@@ -5,6 +5,8 @@ import (
 	"gopkg.in/confluentinc/confluent-kafka-go.v1/kafka"
 )
 
+const topic = "test-topic"
+
 func main() {
 
 	c, err := kafka.NewConsumer(&kafka.ConfigMap{
@@ -17,7 +19,7 @@ func main() {
 		panic(err)
 	}
 
-	c.SubscribeTopics([]string{"myTopic", "^aRegex.*[Tt]opic"}, nil)
+	c.SubscribeTopics([]string{topic}, nil)
 
 	for {
 		msg, err := c.ReadMessage(-1)

@@ -3,7 +3,10 @@ package main
 import (
 	"fmt"
 	"gopkg.in/confluentinc/confluent-kafka-go.v1/kafka"
+	"strconv"
 )
+
+const topic = "test-topic"
 
 func main() {
 
@@ -29,8 +32,15 @@ func main() {
 	}()
 
 	// Produce messages to topic (asynchronously)
-	topic := "myTopic"
-	for _, word := range []string{"Welcome", "to", "the", "Confluent", "Kafka", "Golang", "client"} {
+	topic := topic
+
+	var bigList []string
+
+	for i := 1; i < 1000000; i++ {
+		bigList = append(bigList, strconv.Itoa(i))
+	}
+
+	for _, word := range bigList {
 		p.Produce(&kafka.Message{
 			TopicPartition: kafka.TopicPartition{Topic: &topic, Partition: kafka.PartitionAny},
 			Value:          []byte(word),
