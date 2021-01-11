@@ -5,19 +5,19 @@ import (
 	"gopkg.in/confluentinc/confluent-kafka-go.v1/kafka"
 )
 
-// Consumes all messages on given topic until interrupted
-func consume(topic string) {
-	c, err := kafka.NewConsumer(&kafka.ConfigMap{
-		"bootstrap.servers": "localhost",
-		"group.id":          "myGroup",
-		"auto.offset.reset": "earliest",
-	})
+type DumbKafkaConsumer struct {
+	config *kafka.ConfigMap
+	topic  string
+}
+
+func (dkc DumbKafkaConsumer) consume() {
+	c, err := kafka.NewConsumer(dkc.config)
 
 	if err != nil {
 		panic(err)
 	}
 
-	c.SubscribeTopics([]string{topic}, nil)
+	c.SubscribeTopics([]string{dkc.topic}, nil)
 
 	for {
 		msg, err := c.ReadMessage(-1)
